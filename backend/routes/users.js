@@ -7,6 +7,6 @@ const {
 } = require("../controller/userController");
 const router = express.Router();
 
-router.get("/", getUser);
+router.put("/:id", updateUser);
 
 module.exports = router;
