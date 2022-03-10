@@ -2,6 +2,23 @@ const asyncHandler = require("express-async-handler");
 const User = require("../model/User");
 const Post = require("../model/Post");
 const bcrypt = require("bcrypt");
+// GET
+const getUser = asyncHandler(async (req, res) => {
+	if (req.body.userID === req.params.id) {
+		try {
+			var user = await User.findById(req.params.id);
+			if (!user) {
+				res.status(401).json({ message: "User NOT Found" });
+			}
+			const { password, ...others } = user._doc;
+			res.status(200).json(others);
+		} catch (error) {
+			res.status(401).json(error);
+		}
+	} else {
+		res.status(401).json({ message: "you can Get only  your account" });
+	}
+});
 
 // UPDATE
 const updateUser = asyncHandler(async (req, res) => {
@@ -57,6 +74,7 @@ const deleteUser = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
+	getUser,
 	deleteUser,
 	updateUser,
 };
