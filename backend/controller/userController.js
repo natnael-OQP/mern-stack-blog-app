@@ -1,15 +1,8 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../model/User");
+const Post = require("../model/Post");
 const bcrypt = require("bcrypt");
-// GET
-const getUser = asyncHandler(async (req, res) => {
-	try {
-	} catch (error) {}
-});
-// SET
-const setUser = asyncHandler(async (req, res) => {});
-// DELETE
-const deleteUser = asyncHandler(async (req, res) => {});
+
 // UPDATE
 const updateUser = asyncHandler(async (req, res) => {
 	if (req.body.userID === req.params.id) {
@@ -32,22 +25,38 @@ const updateUser = asyncHandler(async (req, res) => {
 					new: true,
 				});
 				res.status(200).json(user);
-			} catch (error) {}	
+			} catch (error) {}
 		} else {
-			res.status("401").json({
+			res.status(401).json({
 				message: "write what you want to update!",
 			});
 		}
 	} else {
-		res.status("401").json({
+		res.status(401).json({
 			message: "you can update only our account !",
 		});
 	}
 });
+// DELETE
+const deleteUser = asyncHandler(async (req, res) => {
+	if (req.body.userID === req.params.id) {
+		try {
+			var user = await User.findById(req.params.id);
+			if (!user) {
+				res.status(401).json({ message: "User NOT Found" });
+			}
+			await Post.deleteMany({ username: user.username });
+			await User.findByIdAndDelete(req.body.userID);
+			res.status(200).json({ message: "user deleted successfully" });
+		} catch (error) {
+			res.status(401).json(error);
+		}
+	} else {
+		res.status(401).json({ message: "you can only delete your account" });
+	}
+});
 
 module.exports = {
-	getUser,
-	setUser,
 	deleteUser,
 	updateUser,
 };
