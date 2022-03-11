@@ -9,17 +9,23 @@ import Write from "./pages/write/Write";
 import Settings from "./pages/settings/Settings";
 
 function App() {
-	const user = true;
+	const user = false;
 	return (
 		<Router>
 			<Header />
 			<Routes>
 				<Route path="/" element={user ? <Homepage /> : <Register />} />
 				<Route path="/posts" element={<Homepage />} />
-				<Route path="/login" element={user ? <Homepage /> : <Login />} />
+				<Route
+					path="/login"
+					element={user ? <Homepage /> : <Login />}
+				/>
 				<Route path="/post/:id" element={<Single />} />
 				<Route path="/write" element={user ? <Write /> : <Login />} />
-				<Route path="/settings" element={user ? <Settings /> : <Login />} />
+				<Route
+					path="/settings"
+					element={user ? <Settings /> : <Login />}
+				/>
 			</Routes>
 		</Router>
 	);

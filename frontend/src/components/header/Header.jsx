@@ -3,7 +3,7 @@ import "./header.css";
 import { FaSearch } from "react-icons/fa";
 
 export default function Header() {
-	const user = true;
+	const user = false;
 	return (
 		<div className="top">
 			<div className="topLeft">
@@ -47,7 +47,7 @@ export default function Header() {
 							</Link>
 						</li>
 						<li className="topListItem">
-							<Link className="link" to="/register">
+							<Link className="link" to="/">
 								REGISTER
 							</Link>
 						</li>
