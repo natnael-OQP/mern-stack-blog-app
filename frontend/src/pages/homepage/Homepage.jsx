@@ -9,18 +9,15 @@ import Spinner from "../../components/spinner/Spinner";
 
 export default function Homepage() {
 	const [posts, setPosts] = useState();
-	const location = useLocation();
-
+	const { search } = useLocation();
 	useEffect(() => {
 		const fetcher = async () => {
-			const { data } = await axios.get("posts");
+			const { data } = await axios.get(`posts${search}`);
 			setPosts(data);
 		};
 		fetcher();
-	}, []);
-	console.log(posts);
+	}, [search]);
 	if (!posts) return <Spinner />;
-
 	return (
 		<>
 			<Banner />
