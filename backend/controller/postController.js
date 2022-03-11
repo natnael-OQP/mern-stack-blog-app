@@ -1,7 +1,10 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../model/User");
 const Post = require("../model/Post");
-//  create post
+
+// GET
+const getPost = asyncHandler(async (req, res) => {});
+//  CREATE POST
 const createPost = asyncHandler(async (req, res) => {
 	try {
 		const { title, desc, username, photo, categories } = req.body;
@@ -22,26 +25,25 @@ const createPost = asyncHandler(async (req, res) => {
 		});
 	}
 });
-// GET
-const getPost = asyncHandler(async (req, res) => {
-	// if (req.body.userID === req.params.id) {
-	// 	try {
-	// 		var user = await User.findById(req.params.id);
-	// 		if (!user) {
-	// 			res.status(401).json({ message: "User NOT Found" });
-	// 		}
-	// 		const { password, ...others } = user._doc;
-	// 		res.status(200).json(others);
-	// 	} catch (error) {
-	// 		res.status(401).json(error);
-	// 	}
-	// } else {
-	// 	res.status(401).json({ message: "you can Get only  your account" });
-	// }
-});
-
-const deletePost = asyncHandler(async (req, res) => {});
+// UPDATE POST
 const updatePost = asyncHandler(async (req, res) => {});
+// DElETE POST
+const deletePost = asyncHandler(async (req, res) => {
+	try {
+		const post = await Post.findById(req.params.id);
+		if (!post) {
+			res.status(400).json({ message: "Post NOT Found" });
+		}
+		if (req.body.username === post.username) {
+			await Post.findByIdAndDelete(req.params.id);
+			res.status(200).json({ message: "post deleted successfully" });
+		} else {
+			res.status(401).json({ message: "you can delete only  your post" });
+		}
+	} catch (error) {
+		res.status(400).json(error);
+	}
+});
 
 module.exports = {
 	getPost,
