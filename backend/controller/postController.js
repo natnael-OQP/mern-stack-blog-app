@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const User = require("../model/User");
 const Post = require("../model/Post");
 
-// GET
+// GET POST
 const getPost = asyncHandler(async (req, res) => {
 	try {
 		var post = await Post.findById(req.params.id);
@@ -14,7 +14,7 @@ const getPost = asyncHandler(async (req, res) => {
 		res.status(401).json(error);
 	}
 });
-// GET
+// GET ALL POST
 const getAllPost = asyncHandler(async (req, res) => {
 	try {
 		let post;
@@ -57,7 +57,34 @@ const createPost = asyncHandler(async (req, res) => {
 	}
 });
 // UPDATE POST
-const updatePost = asyncHandler(async (req, res) => {});
+const updatePost = asyncHandler(async (req, res) => {
+	try {
+		const { title, desc, username, photo, categories } = req.body;
+		const post = await Post.findById(req.params.id);
+		if (!post) {
+			res.status(400).json({ message: "Post NOT Found" });
+		}
+		if (username === post.username) {
+			const newPost = {
+				title,
+				desc,
+				username,
+				photo,
+				categories,
+			};
+			const updatedPost = await Post.findByIdAndUpdate(
+				req.params.id,
+				newPost,
+				{ new: true }
+			);
+			res.status(200).json(updatedPost);
+		} else {
+			res.status(401).json({ message: "you can delete only  your post" });
+		}
+	} catch (error) {
+		res.status(400).json(error);
+	}
+});
 // DElETE POST
 const deletePost = asyncHandler(async (req, res) => {
 	try {
