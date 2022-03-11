@@ -10,7 +10,6 @@ export default function Post({
 	title,
 	_id,
 }) {
-	console.log(photo, username, categories, createdAt, desc, title, _id);
 	return (
 		<div className="post">
 			{photo && (
