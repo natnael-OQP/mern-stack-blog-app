@@ -1,5 +1,4 @@
 const asyncHandler = require("express-async-handler");
-const User = require("../model/User");
 const Post = require("../model/Post");
 
 // GET POST
