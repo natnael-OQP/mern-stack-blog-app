@@ -3,7 +3,38 @@ const User = require("../model/User");
 const Post = require("../model/Post");
 
 // GET
-const getPost = asyncHandler(async (req, res) => {});
+const getPost = asyncHandler(async (req, res) => {
+	try {
+		var post = await Post.findById(req.params.id);
+		if (!post) {
+			res.status(401).json({ message: "Post NOT Found" });
+		}
+		res.status(200).json(post);
+	} catch (error) {
+		res.status(401).json(error);
+	}
+});
+// GET
+const getAllPost = asyncHandler(async (req, res) => {
+	try {
+		let post;
+		const { cat, user } = req.query;
+		if (user) {
+			post = await Post.find({ username: user });
+		} else if (cat) {
+			post = await Post.find({
+				categories: { $in: [cat] },
+			});
+		} else if (!cat || !user) {
+			post = await Post.find();
+		} else {
+			res.status(401).json({ message: "Posts NOT Found" });
+		}
+		res.status(200).json(post);
+	} catch (error) {
+		res.status(401).json(error);
+	}
+});
 //  CREATE POST
 const createPost = asyncHandler(async (req, res) => {
 	try {
@@ -47,6 +78,7 @@ const deletePost = asyncHandler(async (req, res) => {
 
 module.exports = {
 	getPost,
+	getAllPost,
 	createPost,
 	deletePost,
 	updatePost,
