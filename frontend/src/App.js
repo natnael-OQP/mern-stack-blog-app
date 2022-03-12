@@ -7,6 +7,8 @@ import Login from "./pages/login/Login";
 import Single from "./pages/single/Single";
 import Write from "./pages/write/Write";
 import Settings from "./pages/settings/Settings";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
 	const user = false;
@@ -27,6 +29,7 @@ function App() {
 					element={user ? <Settings /> : <Login />}
 				/>
 			</Routes>
+			<ToastContainer />
 		</Router>
 	);
 }
