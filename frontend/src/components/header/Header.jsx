@@ -1,9 +1,15 @@
 import { Link } from "react-router-dom";
 import "./header.css";
 import { FaSearch } from "react-icons/fa";
+import { Context } from "../../context/Context";
+import { useContext } from "react";
 
 export default function Header() {
-	const user = false;
+	const { user, dispatch } = useContext(Context);
+	const logout = () => {
+		dispatch({ type: "LOGOUT" });
+	};
+
 	return (
 		<div className="top">
 			<div className="topLeft">
@@ -27,7 +33,11 @@ export default function Header() {
 							WRITE
 						</Link>
 					</li>
-					{user && <li className="topListItem">LOGOUT</li>}
+					{user && (
+						<li onClick={logout} className="topListItem">
+							LOGOUT
+						</li>
+					)}
 				</ul>
 			</div>
 			<div className="topRight">
@@ -35,7 +45,11 @@ export default function Header() {
 					<Link className="link" to="/settings">
 						<img
 							className="topImg"
-							src="https://images.pexels.com/photos/1858175/pexels-photo-1858175.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
+							src={
+								user?.profilePic
+									? user?.profilePic
+									: "https://images.pexels.com/photos/1858175/pexels-photo-1858175.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
+							}
 							alt=""
 						/>
 					</Link>
