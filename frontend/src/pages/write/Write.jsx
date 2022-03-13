@@ -24,19 +24,31 @@ export default function Write() {
 		data.append("file", file);
 		data.append("upload_preset", "uploads");
 		try {
-			const upload = await axios.post(
-				`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_ID}/image/upload`,
-				data
-			);
-			const { url } = upload.data;
-			setImage(url);
-			const post = {
-				...input,
-				photo: url,
-				username: user.username,
-			};
-			const { data: posts } = await axios.post("/posts", post);
-			window.location.replace("/post/" + posts._id);
+			if (file) {
+				const upload = await axios.post(
+					`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_ID}/image/upload`,
+					data
+				);
+				const { url } = upload.data;
+				setImage(url);
+				const post = {
+					...input,
+					photo: url,
+					username: user.username,
+				};
+				const { data: posts } = await axios.post("/posts", post);
+				window.location.replace("/post/" + posts._id);
+			} else {
+				const post = {
+					...input,
+					username: user.username,
+				};
+				const { data: posts } = await axios.post(
+					"http://localhost:5000/api/posts/",
+					post
+				);
+				window.location.replace("/post/" + posts._id);
+			}
 		} catch (error) {
 			console.log(error);
 		}
