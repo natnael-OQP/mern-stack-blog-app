@@ -40,6 +40,7 @@ const createPost = asyncHandler(async (req, res) => {
 		const { title, desc, username, photo, categories } = req.body;
 		if (!username || !title || !desc) {
 			res.status(400).json({ message: "fill required fields" });
+			return;
 		}
 		const post = await Post.create({
 			title,
@@ -90,15 +91,13 @@ const deletePost = asyncHandler(async (req, res) => {
 		const post = await Post.findById(req.params.id);
 		if (!post) {
 			res.status(400).json({ message: "Post NOT Found" });
+			return;
 		}
-		if (req.body.username === post.username) {
-			await Post.findByIdAndDelete(req.params.id);
-			res.status(200).json({ message: "post deleted successfully" });
-		} else {
-			res.status(401).json({ message: "you can delete only  your post" });
-		}
+		await Post.findByIdAndDelete(req.params.id);
+		res.status(200).json({ message: "post deleted successfully" });
 	} catch (error) {
 		res.status(400).json(error);
+		return;
 	}
 });
 
