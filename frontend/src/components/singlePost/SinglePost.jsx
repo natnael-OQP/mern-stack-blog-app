@@ -1,6 +1,9 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
 import "./singlePost.css";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { Context } from "../../context/Context";
+import axios from "axios";
 
 export default function Post({
 	photo,
@@ -11,6 +14,15 @@ export default function Post({
 	title,
 	_id,
 }) {
+	const { user } = useContext(Context);
+	const handelDelete = async () => {
+		try {
+			await axios.delete(`http://localhost:5000/api/posts/${_id}`);
+			window.location.replace("/");
+		} catch (error) {
+			console.log(error);
+		}
+	};
 	return (
 		<div className="singlePost">
 			<div className="singlePostWrapper">
@@ -19,14 +31,19 @@ export default function Post({
 				)}
 				<h1 className="singlePostTitle">
 					{title}
-					<div className="singlePostEdit">
-						<span className="singlePostIcon">
-							<FaEdit />
-						</span>
-						<span className="singlePostIcon">
-							<FaTrashAlt />
-						</span>
-					</div>
+					{username === user.username && (
+						<div className="singlePostEdit">
+							<span className="singlePostIcon">
+								<FaEdit />
+							</span>
+							<span
+								onClick={handelDelete}
+								className="singlePostIcon"
+							>
+								<FaTrashAlt />
+							</span>
+						</div>
+					)}
 				</h1>
 				<div className="singlePostInfo">
 					<span>
