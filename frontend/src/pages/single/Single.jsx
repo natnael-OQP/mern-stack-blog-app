@@ -16,7 +16,7 @@ export default function Single() {
 			setPost(data);
 		};
 		fetcher();
-	}, []);
+	}, [id]);
 	if (!post) return <Spinner />;
 	return (
 		<div className="single">
