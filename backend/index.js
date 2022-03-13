@@ -2,7 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const connectDB = require("./config/connectDB");
 const multer = require("multer");
-var cors = require('cors')
+var cors = require("cors");
 
 // routes
 const authRoute = require("./routes/auth");
@@ -16,7 +16,6 @@ dotenv.config();
 connectDB();
 const app = express();
 app.use(express.json());
-app.use(express.urlencoded());
 app.use(cors());
 
 // // create storage
