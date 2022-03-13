@@ -1,7 +1,8 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import "./sidebar.css";
+import { Context } from "../../context/Context";
 
 export default function Sidebar() {
 	const [categories, setCategories] = useState();
@@ -12,18 +13,19 @@ export default function Sidebar() {
 		};
 		fetcher();
 	}, []);
+	const { user } = useContext(Context);
 	return (
 		<div className="sidebar">
 			<div className="sidebarItem">
 				<span className="sidebarTitle">ABOUT ME</span>
-				<img
-					src="https://themegoods-cdn-pzbycso8wng.stackpathdns.com/grandblog/demo/wp-content/uploads/2015/11/aboutme.jpg"
-					alt=""
-				/>
-				<p>
-					Laboris sunt aute cupidatat velit magna velit ullamco dolore
-					mollit amet ex esse.Sunt eu ut nostrud id quis proident.
-				</p>
+				{user?.profilePic && (
+					<img
+						objectFit="contain"
+						src={user?.profilePic}
+						alt="profilePic"
+					/>
+				)}
+				<p>{user.username}</p>
 			</div>
 			<div className="sidebarItem">
 				<span className="sidebarTitle">CATEGORIES</span>
