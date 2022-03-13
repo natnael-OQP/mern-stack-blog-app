@@ -27,7 +27,7 @@ export default function Settings() {
 		try {
 			if (file) {
 				const upload = await axios.post(
-					`https://api.cloudinary.com/v1_1/pizza-oqp/image/upload`,
+					`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_ID}/image/upload`,
 					data
 				);
 				const { url } = upload.data;
